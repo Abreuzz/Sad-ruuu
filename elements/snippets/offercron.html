@@ -1,0 +1,17 @@
+{% if settings.offerbutton_cron_status and settings.offerbutton_cron_day and settings.offerbutton_cron_month and settings.offerbutton_cron_year %}
+
+    <input type="hidden" id="offerbutton-cron-date" value="{{ settings.offerbutton_cron_year }}-{{ settings.offerbutton_cron_month }}-{{ settings.offerbutton_cron_day }}">
+
+{% endif %}
+
+{% if settings.offerbar_cron_status and settings.offerbar_cron_day and settings.offerbar_cron_month and settings.offerbar_cron_year %}
+
+    <input type="hidden" id="offerbar-cron-date" value="{{ settings.offerbar_cron_year }}-{{ settings.offerbar_cron_month }}-{{ settings.offerbar_cron_day }}">
+
+{% endif %}
+
+{% if settings.offerslide_cron_status and settings.offerslide_cron_day and settings.offerslide_cron_month and settings.offerslide_cron_year %}
+
+    <input type="hidden" id="offerslide-cron-date" value="{{ settings.offerslide_cron_year }}-{{ settings.offerslide_cron_month }}-{{ settings.offerslide_cron_day }}">
+
+{% endif %}

@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="pt-br" data-tray-theme="{{ settings.theme_name }}" data-tray-theme-version="" data-files="{{ utils.assets_version }}" data-store="{{ store.id }}" class="page-{{ pages.current }}">
+    
+    <head>
+
+        {# Minified variable is used for helping development #}
+        {% set minified = true %}
+
+        {{ html.charset() }}
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% element 'head-metas' %}
+        
+        <link rel="stylesheet" href="{{ asset('js/photoswipe/photoswipe.css') }}"> 
+        <link rel="stylesheet" href="{{ asset('js/photoswipe/default-skin/default-skin.css') }}"> 
+        
+        {% element 'css-variables' %}
+        {% element 'styles' { minified : minified } %}
+
+        {{ tray.analytics }}
+        {{ googleTagManager.header(pages.current, tagManagerData) }}
+
+    </head>
+    
+    <body>
+
+        {{ googleTagManager.top(pages.current, tagManagerData) }}
+        {% element 'snippets/modals-theme' %}
+
+        <div class="overlay-shadow"></div>
+        
+        <div class="application">
+
+            {% element 'snippets/menu-mobile' %}
+            {% element 'header' %}
+
+            <main class="site-main">
+                
+                {% element 'snippets/offerbar' %}
+                
+                {% if banner.title %}
+                    <div class="banner-title">
+
+                        {% if banners.title.type == "javascript" %}
+
+                            <div class="slide-catalog swiper-container">
+                                <div class="swiper-wrapper">
+                                    {% for banner in banners.title.slides %}
+                                        <div class="item swiper-slide">
+
+                                            {% if banner.link %}
+                                                <a href="{{ banner.link }}" {% if banner.target == '_blank' %} target="_blank" rel="noopener noreferrer" {% endif %}>
+                                                    <img class="swiper-lazy" data-src="{{ banner.image }}" alt="{{ banner.label }}" />
+                                                </a>
+                                            {% else %}
+                                                <img class="swiper-lazy" data-src="{{ banner.image }}" alt="{{ banner.label }}" />
+                                            {% endif %}
+
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="swiper-button prev">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12.125" height="22.666" viewBox="0 0 12.125 22.666">
+                                        <path d="M21.109.265a.917.917,0,0,1,1.29,0,.9.9,0,0,1,0,1.277L11.978,11.86a.917.917,0,0,1-1.29,0L.267,1.542a.9.9,0,0,1,0-1.277.917.917,0,0,1,1.29,0l9.776,9.41L21.108.265Z" transform="translate(12.125) rotate(90)" fill="#151414"/>
+                                    </svg>
+                                </div>
+                                <div class="swiper-button next">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12.125" height="22.666" viewBox="0 0 12.125 22.666">
+                                        <path d="M21.109.265a.917.917,0,0,1,1.29,0,.9.9,0,0,1,0,1.277L11.978,11.86a.917.917,0,0,1-1.29,0L.267,1.542a.9.9,0,0,1,0-1.277.917.917,0,0,1,1.29,0l9.776,9.41L21.108.265Z" transform="translate(0 22.666) rotate(-90)" fill="#151414"/>
+                                    </svg>
+                                </div> 
+                            </div>
+
+                        {% else %}
+
+                            {% set link = banners.title.link ? banners.title.tracked_link : null %}
+                            {% if link %}
+                                <a href="{{ link }}" {% if banners.title.target == '_blank' %} target="_blank" rel="noopener noreferrer" {% endif %}>
+                                    <img src="{{ banners.title.src }}" alt="{{ banners.title.label }}" />
+                                </a>
+                            {% else %}
+                                <img src="{{ banners.title.src }}" alt="{{ banners.title.label }}" />
+                            {% endif %}
+
+                        {% endif %}
+
+                    </div>
+                {% endif %}
+
+                {% if ProgressiveDiscounts %}
+                    <div class="progressive-discount-banners">
+                        {% for discount in ProgressiveDiscounts %}
+                            {% if discount.banner %}
+                                <img src="{{ discount.banner }}" alt="{{ discount.name }}"/>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {% if not ('home' in pages.current) %}
+                <div class="page-content">
+                {% endif %}
+
+                    {% if "central" in pages.current %}
+
+                        <div class="container">
+                            <div class="line-panel flex">
+                                {%  element 'sidebar-central' %}
+                                <div class="col-panel">
+                                    {{ content_for_layout }}
+                                </div>
+                            </div>
+                        </div>
+
+                    {% elseif 'home' in pages.current %}
+
+                        {{ content_for_layout }}
+
+                    {% else %}
+
+                        {% set special_pages = [
+                            'listas',
+                            'depoimentos-de-clientes',
+                            'noticias'
+                        ] %}
+
+                        {% set title = '' %}
+
+                        {% for page in pages.custom %}
+                            {% if ('empresa' in page.slug and pages.current == 'company') or (pages.current == page.slug and page.slug not in special_pages) %}
+                                {% set title = page.name %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="container {% if title != '' %} is-custom-page {% endif %}">
+
+                            {% if title != '' %}
+                                <div class="page-title">
+                                    <span class="text">
+                                        {{ title }}
+                                    </span>
+                                </div>
+                            {% endif %}
+
+                            {{ content_for_layout }}
+
+                        </div>
+
+                    {% endif %}
+                    
+                {% if not pages.current == 'home' %}
+                </div>
+                {% endif %}
+                
+            </main>
+
+            {% element 'footer' %}
+
+            {% if settings.show_whatsapp_button %}
+                {% element 'snippets/whatsapp' { 'local': 'floating' } %}
+            {% endif %}
+
+        </div>
+        
+        <div>
+            {% element 'snippets/messages' %}
+        </div>
+        
+        <input name="data-token" type="hidden" value="*{{ settings.instagram_token }}*">
+        
+        <!-- Root element of PhotoSwipe. Must have class pswp. -->
+        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+            <!-- Background of PhotoSwipe. 
+                 It's a separate element, as animating opacity is faster than rgba(). -->
+            <div class="pswp__bg"></div>
+            <!-- Slides wrapper with overflow:hidden. -->
+            <div class="pswp__scroll-wrap">
+                <!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+                <!-- don't modify these 3 pswp__item elements, data is added later on. -->
+                <div class="pswp__container">
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                </div>
+                <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+                <div class="pswp__ui pswp__ui--hidden">
+                    <div class="pswp__top-bar">
+                        <!--  Controls are self-explanatory. Order can be changed. -->
+                        <div class="pswp__counter"></div>
+                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                        <button class="pswp__button pswp__button--share" title="Share"></button>
+                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                        <!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
+                        <!-- element will get class pswp__preloader--active when preloader is running -->
+                        <div class="pswp__preloader">
+                            <div class="pswp__preloader__icn">
+                                <div class="pswp__preloader__cut">
+                                    <div class="pswp__preloader__donut"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                        <div class="pswp__share-tooltip"></div>
+                    </div>
+                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"> </button>
+                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"> </button>
+                    <div class="pswp__caption">
+                        <div class="pswp__caption__center"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <script src="{{ asset('js/moment.min.js') }}"></script>
+        <script src="{{ asset('js/photoswipe/photoswipe.min.js') }}"></script>
+        <script src="{{ asset('js/photoswipe/photoswipe-ui-default.min.js') }}"></script>
+        
+        {% element 'snippets/offercron' %}
+        {% element 'snippets/offerbutton' %}
+        {% element 'snippets/msg-cookie' %}
+        {% element 'snippets/popup-news' %}
+        {% element 'snippets/pageview' %}
+        {% element 'snippets/modal' %}
+        
+        {% if settings.config_news_message and settings.config_news_message_text %}
+            <script>
+            if (document.querySelector('html.page-newsletter_confirmation')) {                
+                var news_popup_message = document.createElement('p');
+                
+                news_popup_message.classList.add('news-confirmation-message');
+                news_popup_message.innerHTML = '{{ settings.config_news_message_text }}';
+                
+                {% if settings.color_news_message_background %}
+                    news_popup_message.setAttribute('data-color-background', '1');
+                {% endif %}
+                
+                {% if settings.color_news_message_text %}
+                    news_popup_message.setAttribute('data-color-text', '1');
+                {% endif %}
+                
+                document.querySelector('html.page-newsletter_confirmation .page-content > .container').appendChild(news_popup_message);
+            }
+            </script>
+        {% endif %}        
+
+        {% element 'scripts' { minified : minified } %}
+
+        {{ store.chat }}
+        {{ googleTagManager.bottom(pages.current, tagManagerData) }}
+
+    </body>
+    
+</html>

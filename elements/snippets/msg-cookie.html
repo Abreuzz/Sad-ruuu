@@ -1,0 +1,16 @@
+{% if settings.cookies_status and settings.cookies_text %}
+    <div id="msg-cookie">
+        {% set cookies_text1 = settings.cookies_text | split('[link]') %}
+        {% if settings.cookies_link and cookies_text1[1] %}
+            {% set cookies_text2 = cookies_text1[1] | split('[/link]') %}
+            {% if cookies_text2[1] %}
+                <p>{{ cookies_text1[0] }}<a href="{{ settings.cookies_link }}">{{ cookies_text2[0] }}</a>{{ cookies_text2[1] }}</p>
+            {% else %}
+                <p>{{ settings.cookies_text }}</p>
+            {% endif %}
+        {% else %}
+            <p>{{ settings.cookies_text }}</p>
+        {% endif %}
+        <a href="javascript: void(0);" rel="noreferrer noopener" aria-label="Fechar aviso de cookies">Ok</a>
+    </div>
+{% endif %}

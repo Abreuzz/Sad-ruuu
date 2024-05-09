@@ -1,0 +1,80 @@
+{% if settings.offerbutton_status %}
+
+    {% set quantity = 14 %}
+    {% set quantity_total = quantity * 5 %}
+
+    {% if settings.offerbutton_category %}
+    
+        {% set totalOfferProducts = Products({
+            'filter': ['available', 'promotion'],
+            'categories' : [settings.offerbutton_category],
+            'limit' : quantity_total,
+            'order': {
+                'price_offer': 'desc',
+                'stock': 'desc'
+            }
+        }) %}
+
+    {% else %}
+
+        {% set totalOfferProducts = Products({
+            'filter': ['available', 'promotion'],
+            'limit' : quantity_total,
+            'order': {
+                'price_offer': 'desc',
+                'stock': 'desc'
+            }
+        }) %}
+
+    {% endif %}
+
+    {% if totalOfferProducts | length > 0 %}
+
+        {% set offerProducts = [] %}
+        {% set quantity_aux = 0 %}
+
+        {% for totalOfferProduct in totalOfferProducts %}
+            {% if totalOfferProduct.stock and quantity_aux < quantity %}
+                {% set offerProducts = offerProducts|merge([totalOfferProduct]) %}
+                {% set quantity_aux = quantity_aux + 1 %}
+            {% endif %}
+        {% endfor %}
+
+        <div id="offer-button-products">
+            <div class="offer-button-thumb{{ settings.offerbutton_blink ? ' offer-button-blink' }}">
+                <a href="javascript: void(0);" rel="noreferrer noopener" aria-label="Fechar botão flutuante">x</a>
+                <div>
+                    <span>{{ settings.offerbutton_title ? settings.offerbutton_title : 'Ofertas do dia' }}</span>
+                </div>
+            </div>
+            <div class="offer-button-content">
+                <div class="offer-button-container">
+                    <div class="offer-button-top">
+                        <button type="button" class="offer-button-close"><span class="icon icon-arrow_back slick-prev-icon"></span> Fechar</button>
+                        <strong>{{ settings.offerbutton_title ? settings.offerbutton_title : 'Ofertas do dia' }}</strong>
+                        {% if settings.offerbutton_cron_status %}
+                            <p>
+                                {{ settings.offerbutton_cron_text_before }}
+                                <br>
+                                <span>00:00:00</span>
+                                <br>
+                                {{ settings.offerbutton_cron_text_after }}
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div class="offer-button-product-spots">
+                        {% for item in offerProducts %}
+                            <div class="item">
+                                {% element 'snippets/product' {
+                                    product : item
+                                } %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endif %}

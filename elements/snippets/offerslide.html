@@ -1,0 +1,32 @@
+{% if settings.offerslide_status %}
+
+    {% if settings.offerslide_category %}
+    
+        {% set offerProducts = Products({
+            'filter': ['available', 'promotion'],
+            'categories' : [settings.offerslide_category],
+            'limit' : 1
+        }) %}
+
+    {% else %}
+
+        {% set offerProducts = Products({
+            'filter': ['available', 'promotion'],
+            'limit' : 1
+        }) %}
+
+    {% endif %}
+
+    {% if offerProducts | length > 0 %}
+
+        <div id="offer-slide">
+            {% element 'showcase' {
+                'title'    : settings.offerslide_title ? settings.offerslide_title : 'Ofertas',
+                'category' : settings.offerslide_category,
+                'type'     : 'offer'
+            } %}
+        </div>
+
+    {% endif %}
+
+{% endif %}

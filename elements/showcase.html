@@ -1,0 +1,134 @@
+{% if type %}
+
+    {% set quantity = 20 %}
+    {% set quantity_total = quantity * 5 %}
+
+    {% set is_offer = false %}
+
+    {% if type == 'offer' %}
+        {% set is_offer = true %}
+        {% set type = 'promotion' %}
+    {% endif %}
+
+    {% if type == 'top_seller' %}
+
+        {% if category %}
+            {% set total_products = Products({
+                'filter': ['available'],
+                'categories' : [category],
+                'order': {
+                    'quantity_sold': 'desc',
+                    'stock': 'desc'
+                },
+                'limit' : quantity_total
+            }) %}
+        {% else %}
+            {% set total_products = Products({
+                'filter': ['available'],
+                'order': {
+                    'quantity_sold': 'desc',
+                    'stock': 'desc'
+                },
+                'limit' : quantity_total
+            }) %}
+        {% endif %}
+
+    {% elseif type == 'rand' %}
+
+        {% if category %}
+            {% set total_products = Products({
+                'filter': ['available'],
+                'categories' : [category],
+                'order' : 'rand',
+                'limit' : quantity_total
+            }) %}
+        {% else %}
+            {% set total_products = Products({
+                'filter': ['available'],
+                'order' : 'rand',
+                'limit' : quantity_total
+            }) %}
+        {% endif %}
+
+    {% else %}
+
+        {% if category %}
+            {% set total_products = Products({
+                'filter': [type, 'available'],
+                'categories' : [category],
+                'order': {
+                    'stock': 'desc'
+                },
+                'limit' : quantity_total
+            }) %}
+        {% else %}
+            {% set total_products = Products({
+                'filter': [type, 'available'],
+                'order': {
+                    'stock': 'desc'
+                },
+                'limit' : quantity_total
+            }) %}
+        {% endif %}
+
+    {% endif %}
+
+    {% if total_products | length > 0 %}
+
+        {% set products = [] %}
+        {% set quantity_aux = 0 %}
+
+        {% for total_product in total_products %}
+            {% if total_product.stock and quantity_aux < quantity %}
+                {% set products = products|merge([total_product]) %}
+                {% set quantity_aux = quantity_aux + 1 %}
+            {% endif %}
+        {% endfor %}
+                                                                 
+        {% if products | length > 0 %}
+
+            <div class="section-showcase">
+                <div class="container swiper-container">
+
+                    <div class="section-header">
+                        <h2 class="title-section">
+                            {% element 'snippets/title-showcase' { 'title': title } %}
+                        </h2>
+                        {% if is_offer and settings.offerslide_cron_status %}
+                            <p>{{ settings.offerslide_cron_text_before }}<span>00:00:00</span>{{ settings.offerslide_cron_text_after }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="list-product{{ is_offer ? ' list-product-offer' : '' }}" data-slides="{{ settings.slide_quantity ? settings.slide_quantity : 5 }}">
+                        <div class="swiper">
+                            <div class="swiper-wrapper">
+                                {% for item in products %}
+                                    <div class="item swiper-slide">
+                                        {% element 'snippets/product' {
+                                            product : item
+                                        } %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="swiper-button prev">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12.125" height="22.666" viewBox="0 0 12.125 22.666">
+                                    <path d="M21.109.265a.917.917,0,0,1,1.29,0,.9.9,0,0,1,0,1.277L11.978,11.86a.917.917,0,0,1-1.29,0L.267,1.542a.9.9,0,0,1,0-1.277.917.917,0,0,1,1.29,0l9.776,9.41L21.108.265Z" transform="translate(12.125) rotate(90)" fill="#151414"/>
+                                </svg>
+                            </div>
+                            <div class="swiper-button next">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12.125" height="22.666" viewBox="0 0 12.125 22.666">
+                                    <path d="M21.109.265a.917.917,0,0,1,1.29,0,.9.9,0,0,1,0,1.277L11.978,11.86a.917.917,0,0,1-1.29,0L.267,1.542a.9.9,0,0,1,0-1.277.917.917,0,0,1,1.29,0l9.776,9.41L21.108.265Z" transform="translate(0 22.666) rotate(-90)" fill="#151414"/>
+                                </svg>
+                            </div> 
+                            <div class="dots"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+                
+        {% endif %}
+
+    {% endif %}
+
+{% endif %}

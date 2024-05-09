@@ -1,0 +1,84 @@
+{% element 'snippets/banner-home' %}
+{% element 'snippets/featured-categories' %}
+{% element 'snippets/offerslide' %}
+
+{# First showcase #}
+{% element 'showcase' {
+    'title'    : settings.showcase_1_title,
+    'category' : settings.showcase_1_category,
+    'type'     : settings.showcase_1_type
+} %}
+
+{% element 'snippets/banner-grid' %}    
+
+{# Second showcase #}
+{% element 'showcase' {
+    'title'    : settings.showcase_2_title,
+    'category' : settings.showcase_2_category,
+    'type'     : settings.showcase_2_type
+} %}
+
+{% element 'snippets/featured-brands' %}
+{% element 'snippets/banner-line' %}
+
+{# Third showcase #}
+{% element 'showcase' {
+    'title'    : settings.showcase_3_title,
+    'category' : settings.showcase_3_category,
+    'type'     : settings.showcase_3_type
+} %}
+
+{% if settings.instagram_status and settings.instagram_token %}
+    <div class="section-instagram">
+        <div class="section-header">
+            <h2 class="title-section">
+                Instagram
+            </h2>
+        </div>
+        <ul class="section-instagram-content">
+            {% if settings.instagram_token == 'nOuKGCFUNkLLsKofGbxezbGqykhDSonOuKGCFUNkLLsKofGbxezbGqykhDSonOuKGCFUNkLLsKofGbxezbGqykhDSonOuKGCFUNkLLsKofGbxezbGqykhDSonOuKGCFUNkLLsKofGbxkLLsKofGbxezbGqykhDSo*' %}
+                <li>
+                    <a href="#">
+                        <img src="{{ asset('img/instagram-thumb.jpg') }}" alt="Post do Instagram">
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="{{ asset('img/instagram-thumb.jpg') }}" alt="Post do Instagram">
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="{{ asset('img/instagram-thumb.jpg') }}" alt="Post do Instagram">
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="{{ asset('img/instagram-thumb.jpg') }}" alt="Post do Instagram">
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="{{ asset('img/instagram-thumb.jpg') }}" alt="Post do Instagram">
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}
+
+{% for pages in pages.custom %}
+    {% if pages.info == 'noticias' and settings.config_blog_status %}
+        <div class="section-noticias">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="title-section">
+                        {{ settings.config_blog_title ? settings.config_blog_title : '&Uacute;ltimas do Blog' }}
+                    </h2>
+                </div>
+                <div class="section-noticias-content"></div>
+                <a href="/noticias" class="view-more-link"><svg xmlns="http://www.w3.org/2000/svg" width="5.2" height="9" viewBox="0 0 5.2 9"><path d="M10.586,5.829l.867-.9,4.333,4.5-4.333,4.5-.867-.9,3.467-3.6Z" transform="translate(-10.586 -4.929)"/></svg> Ver mais</a>
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}

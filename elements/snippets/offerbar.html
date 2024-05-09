@@ -1,0 +1,48 @@
+{% if settings.offerbar_status %}
+
+    {% if settings.offerbar_category %}
+    
+        {% set offerProducts = Products({
+            'filter': ['available', 'promotion'],
+            'categories' : [settings.offerbar_category],
+            'limit' : 1
+        }) %}
+
+    {% else %}
+
+        {% set offerProducts = Products({
+            'filter': ['available', 'promotion'],
+            'limit' : 1
+        }) %}
+
+    {% endif %}
+
+    {% if offerProducts | length > 0 %}
+
+        <div id="offer-bar">
+            <div class="container">
+                <div>
+                    <h4>{{ settings.offerbar_title ? settings.offerbar_title : 'Os melhores descontos!' }}</h4>
+                    {% if settings.offerbar_cron_status %}
+                        <p>{{ settings.offerbar_cron_text_before }}<span>00:00:00</span>{{ settings.offerbar_cron_text_after }}</p>
+                    {% endif %}
+                </div>
+                {% if settings.offerbar_button %}
+                    {% if settings.offerbar_category %}
+                        {% set offerbar_category = Categories({ 'id': settings.offerbar_category }) %}
+                        <a href="/loja/busca.php?loja={{ store.id }}&somente_oferta=1&categories[]={{ offerbar_category.name }}" class="offer-bar-button">{{ settings.offerbar_button }}</a>
+                    {% else %}
+                        <a href="/loja/busca.php?loja={{ store.id }}&somente_oferta=1" class="offer-bar-button">{{ settings.offerbar_button }}</a>
+                    {% endif %}
+                {% endif %}
+                <a href="javascript: void(0);" rel="noreferrer noopener" class="offer-bar-close" aria-label="Fechar barra de promoção">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14.964" height="14.964" viewBox="0 0 14.964 14.964">
+                        <path d="M6.225,4.811A1,1,0,0,0,4.811,6.225L10.586,12,4.811,17.775a1,1,0,0,0,1.414,1.414L12,13.414l5.775,5.775a1,1,0,0,0,1.414-1.414L13.414,12l5.775-5.775a1,1,0,0,0-1.414-1.414L12,10.586Z" transform="translate(-4.518 -4.518)"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endif %}

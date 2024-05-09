@@ -1,0 +1,135 @@
+<style>
+html {
+
+    {# Font #}
+        --font_family: 'Montserrat', Arial, san-serif;
+
+    {# General #}
+        --color_general_text: {{ settings.color_general_text }};
+        --color_general_text_small: {{ settings.color_general_text_small }};
+        --color_general_text_background: {{ settings.color_general_text_background }};
+
+    {# Header #}
+        --color_header_background: {{ settings.color_header_background }};
+        --color_header_menu: {{ settings.color_header_menu }};
+        --color_header_icons: {{ settings.color_header_icons }};
+    
+    {# Benefits #}
+        --color_benefits_background: {{ settings.color_benefits_background }};
+        --color_benefits_text: {{ settings.color_benefits_text }};
+    
+    {# Sections #}
+        --color_sections_title: {{ settings.color_sections_title }};
+    
+    {# Pages #}
+        --color_pages_title: {{ settings.color_pages_title }};
+    
+    {# Products #}
+        --color_products_name: {{ settings.color_products_name }};
+        --color_products_price: {{ settings.color_products_price }};
+    
+    {# Seals #}
+        --color_seals_discount_background: {{ settings.color_seals_discount_background }};
+        --color_seals_discount_text: {{ settings.color_seals_discount_text }};
+        --color_seals_shipping_background: {{ settings.color_seals_shipping_background }};
+        --color_seals_shipping_text: {{ settings.color_seals_shipping_text }};
+        --color_seals_new_background: {{ settings.color_seals_new_background }};
+        --color_seals_new_text: {{ settings.color_seals_new_text }};
+        --color_seals_featured_background: {{ settings.color_seals_featured_background }};
+        --color_seals_featured_text: {{ settings.color_seals_featured_text }};
+    
+    {# Slides #}
+        --color_slides_arrows: {{ settings.color_slides_arrows }};
+        --color_slides_dots: {{ settings.color_slides_dots }};
+    
+    {# Buttons #}
+        --color_buttons_cart_background: {{ settings.color_buttons_cart_background }};
+        --color_buttons_cart_background_hover: {{ settings.color_buttons_cart_background_hover }};
+        --color_buttons_cart_border: {{ settings.color_buttons_cart_border }};
+        --color_buttons_cart_border_hover: {{ settings.color_buttons_cart_border_hover }};
+        --color_buttons_cart_text: {{ settings.color_buttons_cart_text }};
+        --color_buttons_cart_text_hover: {{ settings.color_buttons_cart_text_hover }};
+        --color_buttons_action_1_background: {{ settings.color_buttons_action_1_background }};
+        --color_buttons_action_1_background_hover: {{ settings.color_buttons_action_1_background_hover }};
+        --color_buttons_action_1_border: {{ settings.color_buttons_action_1_border }};
+        --color_buttons_action_1_border_hover: {{ settings.color_buttons_action_1_border_hover }};
+        --color_buttons_action_1_text: {{ settings.color_buttons_action_1_text }};
+        --color_buttons_action_1_text_hover: {{ settings.color_buttons_action_1_text_hover }};
+        --color_buttons_action_2_background: {{ settings.color_buttons_action_2_background }};
+        --color_buttons_action_2_background_hover: {{ settings.color_buttons_action_2_background_hover }};
+        --color_buttons_action_2_border: {{ settings.color_buttons_action_2_border }};
+        --color_buttons_action_2_border_hover: {{ settings.color_buttons_action_2_border_hover }};
+        --color_buttons_action_2_text: {{ settings.color_buttons_action_2_text }};
+        --color_buttons_action_2_text_hover: {{ settings.color_buttons_action_2_text_hover }};
+        --color_buttons_filter_background: {{ settings.color_buttons_filter_background }};
+        --color_buttons_filter_background_hover: {{ settings.color_buttons_filter_background_hover }};
+        --color_buttons_filter_border: {{ settings.color_buttons_filter_border }};
+        --color_buttons_filter_border_hover: {{ settings.color_buttons_filter_border_hover }};
+        --color_buttons_filter_text: {{ settings.color_buttons_filter_text }};
+        --color_buttons_filter_text_hover: {{ settings.color_buttons_filter_text_hover }};
+    
+    {# Newsletter #}
+        --color_news_background: {{ settings.color_news_background }};
+        --color_news_text: {{ settings.color_news_text }};
+        --color_news_icon: {{ settings.color_news_icon }};
+        --color_news_popup_background: {{ settings.color_news_popup_background }};
+        --color_news_popup_title: {{ settings.color_news_popup_title }};
+        --color_news_popup_text: {{ settings.color_news_popup_text }};
+        --color_news_popup_input_background: {{ settings.color_news_popup_input_background }};
+        --color_news_popup_input_text: {{ settings.color_news_popup_input_text }};
+        --color_news_popup_button_close_background: {{ settings.color_news_popup_button_close_background }};
+        --color_news_popup_button_close_background_hover: {{ settings.color_news_popup_button_close_background_hover }};
+        --color_news_popup_button_close_text: {{ settings.color_news_popup_button_close_text }};
+        --color_news_popup_button_close_text_hover: {{ settings.color_news_popup_button_close_text_hover }};
+        --color_news_popup_button_background: {{ settings.color_news_popup_button_background }};
+        --color_news_popup_button_background_hover: {{ settings.color_news_popup_button_background_hover }};
+        --color_news_popup_button_border: {{ settings.color_news_popup_button_border }};
+        --color_news_popup_button_border_hover: {{ settings.color_news_popup_button_border_hover }};
+        --color_news_popup_button_text: {{ settings.color_news_popup_button_text }};
+        --color_news_popup_button_text_hover: {{ settings.color_news_popup_button_text_hover }};
+        --color_news_message_background: {{ settings.color_news_message_background }};
+        --color_news_message_text: {{ settings.color_news_message_text }};
+    
+    {# Social #}
+        --color_social_background: {{ settings.color_social_background }};
+        --color_social_background_hover: {{ settings.color_social_background_hover }};
+        --color_social_icon: {{ settings.color_social_icon }};
+        --color_social_icon_hover: {{ settings.color_social_icon_hover }};
+    
+    {# Offer Button #}
+        --color_offerbutton_button_background_1: {{ settings.color_offerbutton_button_background_1 }};
+        --color_offerbutton_button_text_1: {{ settings.color_offerbutton_button_text_1 }};
+        --color_offerbutton_button_background_2: {{ settings.color_offerbutton_button_background_2 }};
+        --color_offerbutton_button_text_2: {{ settings.color_offerbutton_button_text_2 }};
+        --color_offerbutton_content_background: {{ settings.color_offerbutton_content_background }};
+        --color_offerbutton_content_text: {{ settings.color_offerbutton_content_text }};
+        --color_offerbutton_cron_background: {{ settings.color_offerbutton_cron_background }};
+        --color_offerbutton_cron_text: {{ settings.color_offerbutton_cron_text }};
+    
+    {# Offer Bar #}
+        --color_offerbar_background: {{ settings.color_offerbar_background }};
+        --color_offerbar_text: {{ settings.color_offerbar_text }};
+        --color_offerbar_button_background: {{ settings.color_offerbar_button_background }};
+        --color_offerbar_button_background_hover: {{ settings.color_offerbar_button_background_hover }};
+        --color_offerbar_button_text: {{ settings.color_offerbar_button_text }};
+        --color_offerbar_button_text_hover: {{ settings.color_offerbar_button_text_hover }};
+        --color_offerbar_cron_background: {{ settings.color_offerbar_cron_background }};
+        --color_offerbar_cron_text: {{ settings.color_offerbar_cron_text }};
+    
+    {# Offer Slide #}
+        --color_offerslide_background: {{ settings.color_offerslide_background }};
+        --color_offerslide_text: {{ settings.color_offerslide_text }};
+        --color_offerslide_cron_background: {{ settings.color_offerslide_cron_background }};
+        --color_offerslide_cron_text: {{ settings.color_offerslide_cron_text }};
+    
+    {# Footer #}
+        --color_footer_background: {{ settings.color_footer_background }};
+        --color_footer_title: {{ settings.color_footer_title }};
+        --color_footer_link: {{ settings.color_footer_link }};
+        --color_footer_text: {{ settings.color_footer_text }};
+
+    {# Images and icons #}
+        --arrow_select: url("data:image/svg+xml,%3Csvg fill='%23{{ settings.text_input|replace({'#': ''}) }}' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 284.929 284.929'%3E%3Cpath d='M282.082,76.511l-14.274-14.273c-1.902-1.906-4.093-2.856-6.57-2.856c-2.471,0-4.661,0.95-6.563,2.856L142.466,174.441 L30.262,62.241c-1.903-1.906-4.093-2.856-6.567-2.856c-2.475,0-4.665,0.95-6.567,2.856L2.856,76.515C0.95,78.417,0,80.607,0,83.082 c0,2.473,0.953,4.663,2.856,6.565l133.043,133.046c1.902,1.903,4.093,2.854,6.567,2.854s4.661-0.951,6.562-2.854L282.082,89.647 c1.902-1.903,2.847-4.093,2.847-6.565C284.929,80.607,283.984,78.417,282.082,76.511z' /%3E%3C/svg%3E%0A");
+
+}
+</style>

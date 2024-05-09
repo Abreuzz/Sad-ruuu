@@ -1,0 +1,77 @@
+{% if settings.category_status %}
+
+    {% set featured_categories = [] %}
+
+    {% for i in 1..20 %}
+        {% if settings['category_id_' ~ i] > 0 %}
+            {% set featured_categories = featured_categories|merge([{
+                "category_id": settings['category_id_' ~ i],
+                "image": settings['category_image_' ~ i]
+            }]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% if featured_categories|length > 0 %}
+        <div class="featured-categories featured-categories-no-slide">
+            <div class="container swiper-container">
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        {% for featured_category in featured_categories %} 
+                            {% for category in categories %}
+                                {% if featured_category.category_id == category.id %}
+                                    <div class="swiper-slide">
+                                        <a href="{{ category.link }}" title="{{ category.name }}">
+                                            {% if featured_category.image != '' %}
+                                                <img src="{{ asset(featured_category.image) }}" alt="{{ category.name }}">
+                                            {% endif %}
+                                            <span>{{ category.name }}</span>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                                {% if category.children %}
+                                    {% for level2 in category.children %}
+                                        {% if featured_category.category_id == level2.id %}
+                                            <div class="swiper-slide">
+                                                <a href="{{ level2.link }}" title="{{ level2.name }}">
+                                                    {% if featured_category.image != '' %}
+                                                        <img src="{{ asset(featured_category.image) }}" alt="{{ category.name }}">
+                                                    {% endif %}
+                                                    <span>{{ level2.name }}</span>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                        {% if level2.children %}
+                                            {% for level3 in level2.children %}
+                                                {% if featured_category.category_id == level3.id %}
+                                                    <div class="swiper-slide">
+                                                        <a href="{{ level3.link }}" title="{{ level3.name }}">
+                                                            {% if featured_category.image != '' %}
+                                                                <img src="{{ asset(featured_category.image) }}" alt="{{ category.name }}">
+                                                            {% endif %}
+                                                            <span>{{ level3.name }}</span>
+                                                        </a>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="swiper-button prev">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12.125" height="22.666" viewBox="0 0 12.125 22.666">
+                        <path d="M21.109.265a.917.917,0,0,1,1.29,0,.9.9,0,0,1,0,1.277L11.978,11.86a.917.917,0,0,1-1.29,0L.267,1.542a.9.9,0,0,1,0-1.277.917.917,0,0,1,1.29,0l9.776,9.41L21.108.265Z" transform="translate(12.125) rotate(90)" fill="#151414"/>
+                    </svg>
+                </div>
+                <div class="swiper-button next">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12.125" height="22.666" viewBox="0 0 12.125 22.666">
+                        <path d="M21.109.265a.917.917,0,0,1,1.29,0,.9.9,0,0,1,0,1.277L11.978,11.86a.917.917,0,0,1-1.29,0L.267,1.542a.9.9,0,0,1,0-1.277.917.917,0,0,1,1.29,0l9.776,9.41L21.108.265Z" transform="translate(0 22.666) rotate(-90)" fill="#151414"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endif %}

@@ -1,0 +1,363 @@
+{% set showZoom = 'zoom-on' in productHelper.gallery %}
+
+<div class="product-container">
+
+    {% element 'snippets/breadcrumb' %}
+    {% element 'schema' { 'product' : product } %}
+    
+    <div id="product-wrapper" class="product-wrapper">
+
+        <div class="product-box{{ product.images|length == 1 ? ' product-box-one-image' }}{{ product.is_kit ? ' product-box-kit' }}{{ product.available and (product.stock > 0 or settings.without_stock_sale) and not product.upon_request ? '' : ' product-box-no-stock' }}">
+            {% set discount = product.price_offer > 0 ? (100 - (product.price_offer / product.price) * 100) : false %}
+            <div class="product-gallery{{ showZoom ? ' zoom-true' }}">
+    
+                {% if product.video %}
+                    <div class="product-video" data-url="{{ product.video }}" aria-label="Ver V&iacute;deo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                          <path d="M10,16.5,16,12,10,7.5ZM12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8.011,8.011,0,0,1,12,20Z" transform="translate(-2 -2)"/>
+                        </svg>
+                        <span class="text">V&iacute;deo</span>
+                    </div>
+                {% endif %}
+              
+                <div class="product-images swiper swiper-container">
+                    <div class="swiper-wrapper">
+                        {% for images in product.images %}
+                            <div class="image swiper-slide" data-index="{{ loop.index }}">
+                                <div class="zoom">
+                                    <img src="{{ images.full }}" alt="{{ product.name }}">
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+    
+            </div>
+    
+            <div class="product-form">
+                
+                <form id="form_comprar" {% if form_classes | length > 0 %} class="{{ form_classes | join (' ') }}" {% endif %} method="post" data-app="product.buy-form" data-id="{{ product.id }}" action="{{ links.cart_add ~ product.id }}">
+                
+                    {% if product.is_kit %}
+                        <div class="product-kit">
+    
+                            <div class="tray-content">
+                                {{ productHelper.kit() }}
+                            </div>
+                            <div class="variant-error error-message" style="display: none">
+                                Por favor, selecione as varia&ccedil;&otilde;es antes de prosseguir.
+                            </div>
+    
+                        </div>
+                    {% endif %}
+                    
+                    <div class="product-simple">
+                        
+                        <div class="product-loader loader">
+                            <div class="spinner">
+                                <div class="double-bounce-one"></div>
+                                <div class="double-bounce-two"></div>
+                            </div>
+                            <div class="message">Atualizando informa&ccedil;&otilde;es ...</div>
+                        </div>
+            
+                        <h1 class="product-name">
+                            {{ product.name }}
+                        </h1>
+                        
+                        {% element 'snippets/rating' {
+                            'review': product.ranking,
+                            'total' : true
+                        } %}
+                        
+                        {% set firstProgressiveDiscount = ProgressiveDiscounts | first %}
+                        {% set extra_tag = product.additional_button %}
+            
+                        {% if product.featured or product.free_shipping or product.new or discount or extra_tag or firstProgressiveDiscount %}
+                            <div class="product-tags">
+                                
+                                {% if product.new %}
+                                    <div class="tag new">
+                                        {% if Image('new') %}
+                                            {{ Image('new') }}
+                                        {% else %}
+                                            <span>Lan&ccedil;amento</span>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                                
+                                {% if product.featured %}
+                                    <div class="tag featured">
+                                        {% if Image('featured') %}
+                                            {{ Image('featured') }}
+                                        {% else %}
+                                            <span>Destaque</span>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+            
+                                {% if product.free_shipping %}
+                                    <div class="tag free-shipping">
+                                        {% if Image('free_shipping') %}
+                                            {{ Image('free_shipping') }}
+                                        {% else %}
+                                            <span>Frete gr&aacute;tis</span>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+            
+                                {% if extra_tag and Image('additional_button') %}
+                                    <div class="tag extra">
+                                        {{ Image('additional_button') }}
+                                    </div>
+                                {% endif %}
+                                
+                                {% if ProgressiveDiscounts %}
+                                    {% for discount in ProgressiveDiscounts %}
+                                        <div class="tag progressive-discount">
+                                            <span>{{ discount.name }}</span>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+            
+                            </div>
+                        {% endif %}
+            
+                        {% if product.additional_message %}
+                            <div class="product-additional-message">
+                                {{ product.additional_message }}
+                            </div>
+                        {% endif %}
+            
+                        {{ productHelper.icons() }}
+                        
+                        {% if product.available and (product.stock > 0 or settings.without_stock_sale) and not product.upon_request %}
+            
+                            {% set form_classes = [] %}
+            
+                            {% if product.is_kit %}
+                                {% set form_classes = form_classes | merge(['is-kit']) %}
+                            {% endif %}
+            
+                            {% if productHelper.gifts() %}
+                                {% set form_classes = form_classes | merge(['has-gift']) %}
+                            {% endif %}
+            
+                            <div class="form_aux_comprar">
+                                
+                                <div class="product-price product-price-tray">
+                                    {{ productHelper.pricing() }}
+                                    {% if discount %}
+                                        <div class="tag-price-discount">{{ discount | number_format }}% Off</div>
+                                    {% endif %}
+                                </div>
+                                
+                                {% if settings.measurement_chart_status and banners.extra7 %}
+                                    <div class="tabela-medidas btn-tabela-medidas">
+                                        <figure>
+                                            <a href="{{ banners.extra7.image ? banners.extra7.image : banners.extra7.src }}" itemprop="contentUrl" data-size="">Tabela de medidas</a>
+                                        </figure>
+                                    </div>
+                                {% endif %}
+            
+                                {% if product.variants %}
+                                    <div class="product-variants">
+            
+                                        <div class="tray-content">
+                                            {{ productHelper.variants() }}
+                                        </div>
+            
+                                    </div>
+                                {% endif %}
+            
+                                <div class="product-gifts">
+                                    {{ productHelper.gifts() }}
+                                </div>
+            
+                                {% if product.additional_information %}
+                                    <div class="product-additional-fields">
+            
+                                        {{ product.additional_information }}
+                                        <div class="additional-field-required error-message" style="display: none">
+                                            Por favor, preencha os campos acima.
+                                        </div>
+            
+                                    </div>
+                                {% endif %}
+            
+                                {% if productHelper.banner() %}
+                                    {% set batch_promotion = productHelper.banner() %}
+                                    <div class="product-batch-promotion {% if 'img' not in batch_promotion %} text-promotion {% endif %}">
+                                        {{ batch_promotion }}
+                                    </div>
+                                {% endif %}
+            
+                                {% if productHelper.bonus() and 'idBonusVariacao' in productHelper.bonus() %}
+                                    <div class="product-reward">
+                                        {{ productHelper.bonus() }}
+                                    </div>
+                                {% endif %}
+            
+                                <div class="actions">
+                                    <div class="tray-buy-button">
+                                        {{ productHelper.form() }}
+                                    </div>
+                                </div>
+            
+                            </div>
+                        
+                            {% if not product.upon_request and product.available and productHelper.wishlist() %}
+                                <div class="wishlist" title="Adicionar aos favoritos">
+                                    {{ productHelper.wishlist() }}
+                                </div>
+                            {% endif %}
+
+                            {% if productHelper.social() %}
+                                <div class="product-social-share">
+                                    <button type="button"><svg xmlns="http://www.w3.org/2000/svg" width="14.458" height="16" viewBox="0 0 14.458 16"><path d="M16.048,14.037a2.33,2.33,0,0,0-1.578.619L8.747,11.318a2.223,2.223,0,0,0,0-1.125l5.663-3.3a2.4,2.4,0,1,0-.771-1.759,2.344,2.344,0,0,0,.072.562L8.048,9a2.41,2.41,0,1,0,0,3.518l5.723,3.338a2.262,2.262,0,0,0-.064.527,2.341,2.341,0,1,0,2.341-2.341Z" transform="translate(-4 -2.72)" fill="#151414"/></svg> Compartilhar</button>
+                                    <div class="product-social-share-content">
+                                        <!-- AddToAny BEGIN -->
+                                        <div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="{{ product.link }}" data-a2a-title="{{ product.name }}">
+                                        <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+                                        <a class="a2a_button_whatsapp"></a>
+                                        <a class="a2a_button_facebook"></a>
+                                        <a class="a2a_button_pinterest"></a>
+                                        <a class="a2a_button_twitter"></a>
+                                        </div>
+                                        <script>
+                                        var a2a_config = a2a_config || {};
+                                        a2a_config.onclick = 1;
+                                        a2a_config.locale = "pt-BR";
+                                        a2a_config.num_services = 10;
+                                        </script>
+                                        <script async src="https://static.addtoany.com/menu/page.js"></script>
+                                        <!-- AddToAny END -->
+                                    </div>
+                                </div>
+                            {% endif %}
+            
+                        {% else %}
+            
+                            {# This helper verify if product is available or not and generate the correct html #}
+                            <div class="product-not-sale">
+                                {{ productHelper.pricing() }}
+                            </div>
+            
+                        {% endif %}
+                        
+                        {% if productHelper.shipping() and product.available and (product.stock > 0 or settings.without_stock_sale) and not product.upon_request %}
+                            <div class="product-shipping">
+
+                                {{ productHelper.shipping() }}
+
+                                <span class="info">
+                                    Calcular frete
+                                </span>
+
+                                <div class="shipping-form">
+                                    <div class="form-input">
+                                        <label for="zip" class="sr-only">CEP</label>
+                                        <input type="tel" class="input zip-code-mask" id="zip" name="zip" minlength="9" maxlength="9" placeholder="00000-000">
+                                    </div>
+                                    <button type="button" class="submit-shipping">
+                                        Calcular
+                                    </button>
+                                </div>
+
+                                <div class="result"></div>
+
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                    
+                </form>
+    
+            </div>
+        </div>
+    
+        {% if productHelper.bundle() %}
+            <div class="section-buy-together compre-junto">
+                <div class="product-cross-sell">
+                    {{ productHelper.bundle() }}
+                </div>
+            </div>
+        {% endif %}
+    
+        <div class="product-tabs">
+            {% element 'snippets/product-tabs' { 'product' : product } %}
+        </div>
+    
+    </div>
+    
+</div>
+
+{% if product.related_products %}
+    <div class="section-product-related section-showcase">
+        <div class="container">
+
+            <div class="section-header">
+                <h2 class="title-section">
+                    Veja tamb&eacute;m
+                </h2>
+            </div>
+
+            <div class="list-product" data-slides="{{ settings.slide_quantity ? settings.slide_quantity : 5 }}">
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        {% for item in product.related_products %}
+                            <div class="item swiper-slide">
+                                {% element 'snippets/product' {
+                                    product : item
+                                } %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-button prev">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12.125" height="22.666" viewBox="0 0 12.125 22.666">
+                            <path d="M21.109.265a.917.917,0,0,1,1.29,0,.9.9,0,0,1,0,1.277L11.978,11.86a.917.917,0,0,1-1.29,0L.267,1.542a.9.9,0,0,1,0-1.277.917.917,0,0,1,1.29,0l9.776,9.41L21.108.265Z" transform="translate(12.125) rotate(90)" fill="#151414"/>
+                        </svg>
+                    </div>
+                    <div class="swiper-button next">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12.125" height="22.666" viewBox="0 0 12.125 22.666">
+                            <path d="M21.109.265a.917.917,0,0,1,1.29,0,.9.9,0,0,1,0,1.277L11.978,11.86a.917.917,0,0,1-1.29,0L.267,1.542a.9.9,0,0,1,0-1.277.917.917,0,0,1,1.29,0l9.776,9.41L21.108.265Z" transform="translate(0 22.666) rotate(-90)" fill="#151414"/>
+                        </svg>
+                    </div> 
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endif %}
+
+{% if settings.history_position %}
+    <div class="products-history">
+        <div class="container">
+
+            <div class="section-header">
+                <h2 class="title-section">
+                    Produtos visualizados
+                </h2>
+            </div>
+
+            <div class="products-history-wrapper">
+
+                <div class="history-loader loader">
+                    <div class="spinner">
+                        <div class="double-bounce-one"></div>
+                        <div class="double-bounce-two"></div>
+                    </div>
+                    Carregando ...
+                </div>
+
+                {% element 'snippets/history' {
+                    'store.id'      : store.id,
+                    'pages.current' : pages.current,
+                    'category.id'   : category.id
+                } %}
+
+            </div>
+
+        </div>
+    </div>
+{% endif %}

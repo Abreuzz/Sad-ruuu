@@ -1,0 +1,198 @@
+{% set email = Translation('ag_email_1') %}
+{% set phone1 = Translation('ag_telefone_1') %}
+{% set phone2 = Translation('ag_telefone_2') %}
+{% set phone3 = Translation('ag_telefone_3') %}
+{% set open_time = Translation('ag_atendimento') %}
+
+{% if banner.footer %}
+    <div class="banner-footer">
+        {{ banner.footer }}
+    </div>
+{% endif %}
+
+{% if settings.config_news_status %}
+    <div class="newsletter">
+        <div class="container"> 
+            <div class="info flex align-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="52.809" height="34.656" viewBox="0 0 52.809 34.656">
+                    <path d="M46.208,5H6.6A6.6,6.6,0,0,0,0,11.6V33.055a6.6,6.6,0,0,0,6.6,6.6H46.208a6.6,6.6,0,0,0,6.6-6.6V11.6A6.6,6.6,0,0,0,46.208,5ZM3.3,13.664l11.55,8.664L3.3,30.992V13.664ZM49.508,33.055a3.3,3.3,0,0,1-3.3,3.3H6.6a3.3,3.3,0,0,1-3.3-3.3l12.925-9.7,7.208,5.408a4.948,4.948,0,0,0,5.939,0l7.21-5.408Zm0-2.063L37.956,22.328l11.552-8.664ZM28.383,27.447a3.3,3.3,0,0,1-3.959,0L3.3,11.6A3.3,3.3,0,0,1,6.6,8.3H46.208a3.3,3.3,0,0,1,3.3,3.3L28.383,27.447Z" transform="translate(0 -5)" fill="#151414"/>
+                </svg>
+                {% if settings.config_news_title %}
+                    <strong>{{ settings.config_news_title }}</strong>
+                {% endif %}
+            </div>
+            <form class="form" action="/mvc/store/newsletter/" method="post">
+                <input type="hidden" name="loja" value="{{ store.id }}">
+                <input type="text" class="field" name="name" placeholder="Nome" required spellcheck="false" autocomplete="off">
+                <input type="email" class="field" name="email" placeholder="E-mail" required spellcheck="false" autocomplete="off">
+                <button type="submit" class="button news-button" title="Cadastrar" aria-label="Cadastrar">Enviar</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+
+<footer class="footer">
+
+    <div class="cols">
+        
+        <div class="container flex justify-between f-wrap">
+
+            <div class="box">
+                <div class="title">Institucional</div>
+                <div class="overflow">
+                    <ul class="list">
+                        {% for custom in pages.custom %}
+                        <li>
+                            <a href="{{ custom.url }}" title="{{ custom.name }}">{{ custom.name }}</a>
+                        </li>
+                        {% endfor %}
+                        <li>
+                            <a href="{{ links.contact }}" title="Fale Conosco">Fale Conosco</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="box">
+                <div class="title">Minha Conta</div>
+                <div class="overflow">
+                    <ul class="list">
+                        <li>
+                            <a href="{{ links.register }}" title="Criar Conta">Criar Conta</a>
+                        </li>
+                        <li>
+                            <a href="{{ links.account }}" title="Minha Conta">Minha Conta</a>
+                        </li>
+                        <li>
+                            <a href="{{ links.orders }}" title="Meus Pedidos">Meus Pedidos</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="box box-infos">
+                <div class="title">Atendimento</div>
+                <div class="overflow">
+                    <ul class="list">
+                    
+                        {% if email %}
+                        <li>
+                            <a href="mailto:{{ email }}" rel="noreferrer noopener" title="Email: {{ email }}">
+                                {{ email }}
+                            </a>
+                        </li>
+                        {% endif %}
+                    
+                        {% if phone1 %}
+                        {% set link = phone1 | replace({'(': '', ')': '', '-': '', ' ': ''}) %}
+                        <li>
+                            <a href="tel:{{ link }}" rel="noreferrer noopener" title="Telefone: {{ phone1 }}">
+                                {{ phone1 }}
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        {% if phone2 %}
+                        {% set link = phone2 | replace({'(': '', ')': '', '-': '', ' ': ''}) %}
+                        <li>
+                            <a href="tel:{{ link }}" rel="noreferrer noopener" title="Telefone: {{ phone2 }}">
+                                {{ phone2 }}
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        {% if phone3 %}
+                        {% set link = phone3 | replace({'(': '', ')': '', '-': '', ' ': ''}) %}
+                        <li>
+                            <a href="tel:{{ link }}" rel="noreferrer noopener" title="Telefone: {{ phone3 }}">
+                                {{ phone3 }}
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        {% if open_time %}
+                        <li>
+                            {{ open_time | nl2br }}
+                        </li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="box">
+                
+                {% if settings.social_facebook or settings.social_twitter or settings.social_instagram or settings.social_youtube or settings.social_pinterest %}
+                <div class="box-item">
+                    <div class="title">Redes sociais</div>
+                    <div class="overflow footer-social">
+                        {% element 'snippets/social-media' %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="box-item">
+                    <div class="title">Seguran&ccedil;a na compra</div>
+                    <div class="overflow">
+                        {% if paymentMethods.order or paymentMethods.credit %}
+                            {% element 'snippets/payment-list' %}
+                        {% endif %}
+                        <ul class="security-seals flex f-wrap">                    
+                            <li class="google-seal">
+                                <a href="https://transparencyreport.google.com/safe-browsing/search?url={{ store.url }}" target="_blank" rel="noreferrer noopener" title="Google Safe Browsing">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="21.435" viewBox="0 0 17 21.435">
+                                        <path id="locked" d="M4,23.435V11.609H6.217v-3.7A5.913,5.913,0,0,1,12.13,2h.739a5.913,5.913,0,0,1,5.913,5.913v3.7H21V23.435Zm7.941-6.07-.55,3.853h2.217l-.551-3.853a1.478,1.478,0,1,0-1.117,0Zm4.624-9.082a4.065,4.065,0,1,0-8.13,0v3.326h8.13Z" transform="translate(-4 -2)" fill="#151414"/>
+                                    </svg> Loja Segura
+                                </a>
+                            </li>
+                            {% if seals.ebit %}
+                                <li class="ebit-seal">
+                                    {{ seals.ebit }}
+                                </li>
+                            {% endif %}
+                            {% if seals.hackersafe %}
+                                <li class="loja-protegida-seal">
+                                    {{ seals.hackersafe }}
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        
+    </div>
+
+    <div class="copy">
+        <div class="container">
+            <div class="text">
+                {% if Translation('ag_mensagem_rodape') %}
+                    <p>{{ Translation('ag_mensagem_rodape') }}</p>
+                {% endif %}
+            </div>
+            <ul class="dev">
+                <li>
+                    <span>Desenvolvido por</span>
+                    <a href="https://proexdigital.com.br/" title="Proex Digital" rel="noreferrer noopener" target="_blank">
+                        <img width="70" class="lazyload" data-src="{{ asset('img/proexdigital.png') }}" alt="Proex Digital">
+                    </a>
+                </li>
+                <li>
+                    <span>Plataforma</span>
+                    <a href="https://www.tray.com.br/parceria/proexdigital/" title="Tray" rel="noreferrer noopener" target="_blank">
+                        <img width="60" class="lazyload" data-src="{{ asset('img/tray.png') }}" alt="Tray">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    {% if tray.theme_configs.custom_theme_preview %}
+        <div class="mode-preview">
+            <a href="/mvc/store/home/reset_opencode_preview?loja={{ store.id }}">Sair do modo preview</a>
+        </div>
+    {% endif %}
+
+</footer>

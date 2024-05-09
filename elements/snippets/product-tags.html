@@ -1,0 +1,70 @@
+{% set discount = product.price_offer > 0 ? (100 - (product.price_offer / product.price) * 100) : false %}
+{% set tags_count = 0 %}
+
+{% if product.new %}
+    {% set tags_count = tags_count + 1 %}
+{% endif %}
+
+{% if product.featured %}
+    {% set tags_count = tags_count + 1 %}
+{% endif %}
+
+{% if product.additional_button %}
+    {% set tags_count = tags_count + 1 %}
+{% endif %}
+
+{% if discount %}
+    <div class="product-tags-circle">
+
+        {% if discount %}
+            <div class="tag-circle discount">
+                <span class="discount-value">
+                    -{{ discount | number_format }}% OFF
+                </span>
+            </div>
+        {% endif %}
+
+    </div>
+{% endif %}
+
+{% if product.new or product.featured or product.free_shipping or product.additional_button or discount %}
+    <div class="product-tags {% if product.free_shipping -%} has-free-shipping-tag {%- endif %}" data-tags-count="{{ tags_count > 4 ? 4 : tags_count }}">
+
+        {% if product.new %}
+            <div class="tag new">
+                {% if Image('new') %}
+                    {{ Image('new') | replace({'src=': 'alt="Tag lan&ccedil;amento de produto" src='}) }}
+                {% else %}
+                    <span>Lan&ccedil;amento</span>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if product.featured %}
+            <div class="tag featured">
+                {% if Image('featured') %}
+                    {{ Image('featured') | replace({'src=': 'alt="Tag destaque de produto" src='}) }}
+                {% else %}
+                    <span>Destaque</span>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if product.free_shipping %}
+            <div class="tag free-shipping">
+                {% if Image('free_shipping') %}
+                    {{ Image('free_shipping') | replace({'src=': 'alt="Tag frete gr&aacute;tis de produto" src='}) }}
+                {% else %}
+                    <span>Frete gr&aacute;tis</span>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if product.additional_button and Image('additional_button') %}
+            <div class="tag extra">
+                {{ Image('additional_button') | replace({'src=': 'alt="Tag extra de produto" src='}) }}
+            </div>
+        {% endif %}
+
+    </div>
+{% endif %}

@@ -1,0 +1,44 @@
+{% if paginate.params.pageCount > 1 %}
+
+    <div class="pagination">
+
+        {% if paginate.hasPrev %}
+            {{ paginate.prev('<svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" style="transform: rotate(180deg);"><path data-name="chevron-right" d="M10.586,5.929l1-1,5,5-5,5-1-1,4-4Z" transform="translate(-10.586 -4.929)"/></svg>', {
+                'escape' : false,
+                'tag'    : 'span',
+                'title'  : 'P&aacute;gina anterior',
+                'class'  : 'pagination-arrow pagination-prev'
+            }) }}
+        {% endif %}
+        
+        <ul class="pagination-numbers">
+            {{ paginate.numbers({
+                'modulus'      : 3,
+                'separator'    : false,
+                'tag'          : 'li'
+            }) }}
+        </ul>
+    
+        <select class="pagination-select">
+            {{ paginate.numbers({
+                'modulus'      : 99,
+                'separator'    : false,
+                'tag'          : 'option',
+                'currentClass' : 'current',
+            }) }}
+        </select>
+        
+        <span class="pagination-text">de {{ paginate.params.pageCount }}</span>
+        
+        {% if paginate.hasNext %}
+            {{ paginate.next('<svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10"><path data-name="chevron-right" d="M10.586,5.929l1-1,5,5-5,5-1-1,4-4Z" transform="translate(-10.586 -4.929)"/></svg>', {
+                'escape' : false,
+                'tag'    : 'span',
+                'title'  : 'Pr&oacute;xima página',
+                'class'  : 'pagination-arrow pagination-next'
+            }) }}
+        {% endif %}
+    
+    </div>
+    
+{% endif %}

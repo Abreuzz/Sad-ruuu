@@ -1,0 +1,219 @@
+{% set link_classes = {
+    'description'     : 'description-link-tab',
+    'included_items'  : 'included-items-link-tab',
+    'warranty'        : 'warranty-link-tab',
+    'payment_methods' : 'payment-link-tab',
+    'comments'        : 'comments-link-tab'
+} %}
+
+{% set tabs_classes = {
+    'description'     : 'description-ab',
+    'included_items'  : 'included-items-tab',
+    'warranty'        : 'warranty-tab',
+    'payment_methods' : 'payment-tab',
+    'comments'        : 'comments-tab'
+} %}
+
+{% set tabs = [] %}
+
+{% for key, tab in productTabs %}
+    {% if key == 'custom' or key == 'downloads' or 'AdditionalTab' in key %}
+
+        {% set tabs = tabs | merge({ (key) : tab }) %}
+
+    {% elseif key == 'payment_methods' %}
+        {% if product.available and (product.stock > 0 or settings.without_stock_sale) and not product.upon_request %}
+
+            {% set currentTab = {
+                'id'           : tab.id,
+                'container_id' : tab.container_id,
+                'description'  : tab.description,
+                'link_class'   : link_classes[key] ? link_classes[key] : 'custom-link-tab',
+                'tab_class'    : tabs_classes[key] ? tabs_classes[key] : 'custom-tab',
+                'active_class' : loop.first ? 'active' : ''
+            } %}
+
+            {% if tab.url %}
+                {% set currentTab = currentTab | merge({ 'url' : tab.url }) %}
+            {% endif %}
+
+            {% set tabs = tabs | merge({ (key) : currentTab }) %}
+
+        {% endif %}
+    {% else %}
+
+        {% set currentTab = {
+            'id'           : tab.id,
+            'container_id' : tab.container_id,
+            'description'  : tab.description,
+            'link_class'   : link_classes[key] ? link_classes[key] : 'custom-link-tab',
+            'tab_class'    : tabs_classes[key] ? tabs_classes[key] : 'custom-tab',
+            'active_class' : loop.first ? 'active' : ''
+        } %}
+
+        {% if tab.url %}
+            {% set currentTab = currentTab | merge({ 'url' : tab.url }) %}
+        {% endif %}
+
+        {% set tabs = tabs | merge({ (key) : currentTab }) %}
+
+    {% endif %}
+{% endfor %}
+
+{% set has_datasheet = false %}
+
+<div class="tabs-content">
+    
+    {% for key, tab in tabs %}
+    
+        {% set tab_id = tab.container_id | replace({ '#' : '' }) %}
+    
+        {% if tab_id != 'itensInclusos' and tab_id != 'caracteristicas' and tab_id != 'garantia' %}
+    
+            <div class="tab-item tab-item-{{ tab_id }}">
+
+                <h3 class="tab-title">
+                    {{ tab.description }}
+                </h3>
+
+                {# Tab content #}
+
+                {% if key != 'custom' and 'AdditionalTab' not in key %}
+
+                    {% set rte_class = (key == 'description' or key == 'warranty' or key == 'included_items' or key == 'datasheet') ? 'rte' : '' %}
+
+                    <div class="tab {{ rte_class }} {{ tab.tab_class }}" id="{{ tab_id }}" {% if key == 'payment_methods' %} data-loaded-price="" {% endif %} {% if tab.url %} data-url="{{ tab.url }}" {% endif %}>
+
+                        {% if key == 'description' %}
+
+                            {{ product.description ? product.description : product.description_small }}
+
+                        {% elseif key == 'included_items' %}
+
+                            Itens inclusos: {{ product.included_items }}
+
+                        {% elseif key == 'comments' %}
+
+                            {%- set productComments -%}
+                                {%- element 'product/comments' -%}
+                            {%- endset -%}
+
+                            <div id="tray-comment-block"></div>
+                            <script> window.commentsBlock = `{{ productComments | raw }}`; </script>
+
+                        {% elseif key == 'downloads' %}
+
+                            {{ tab.content }}
+
+                        {% elseif key == 'properties' %}
+
+                            {% element 'product/properties' %}
+
+                        {% endif %}
+
+                    </div>
+
+                {% elseif key == 'custom' %}
+                    {{ tab.content | replace({ 'prodBox' : 'tab rte custom-tab' }) }}
+                {% endif %}
+                
+            </div>
+    
+        {% else %}
+    
+            {% set has_datasheet = true %}
+        
+        {% endif %}
+
+    {% endfor %}
+    
+    {% if has_datasheet %}
+    
+        <div class="tab-item tab-item-datasheet">
+    
+            <h3 class="tab-title">
+                Ficha T&eacute;cnica
+            </h3>
+
+            <table class="product-datasheet">
+
+                {% if product.reference and settings.show_reference %}
+                    <tr>
+                        <td>Ref.</td>
+                        <td class="tab product-sku ref" id="product-reference" data-url="/mvc/store/product/variant_reference/?loja={{ store.id }}">{{ product.reference }}</td>
+                    </tr>
+                {% endif %}
+
+                {% if settings.show_product_brand and product.brand %}
+                    <tr>
+                        <td>Marca</td>
+                        <td class="tab">{{ product.brand }}</td>
+                    </tr>
+                {% endif %}
+
+                {% if product.model %}
+                    <tr>
+                        <td>Modelo</td>
+                        <td class="tab">{{ product.model }}</td>
+                    </tr>
+                {% endif %}
+
+                {% set productDetails = productHelper.details() %}             
+
+                {% if 'class="dados-campo infoLancamento"' in productDetails %}
+                    <tr>
+                        <td>Data de lan&ccedil;amento</td>
+                        <td class="tab">{{ product.release_date | date('d/m/Y') }}</td>
+                    </tr>
+                {% endif %}
+
+                {% if 'class="availability"' in productDetails %}
+                    <tr>
+                        <td>Disponibilidade</td>
+                        <td class="tab">{{ product.availability }}</td>
+                    </tr>
+                {% endif %}
+
+                {% for key, tab in tabs %}
+
+                    {% set tab_id = tab.container_id | replace({ '#' : '' }) %}
+
+                    {% if tab_id == 'itensInclusos' or tab_id == 'caracteristicas' or tab_id == 'garantia' %}
+                        <tr>
+                            <td>{{ tab.description }}</td>
+                            <td class="tab" {% if tab.url %} data-url="{{ tab.url }}" {% endif %}>
+                                {% if key == 'included_items' %}
+                                    {{ product.included_items }}
+                                {% elseif key == 'properties' %}
+                                    {% element 'product/properties' %}
+                                {% else %}
+                                    {{ tab.content }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+
+                {% endfor %}
+
+            </table>
+            
+        </div>
+    
+    {% endif %}
+    
+    {% if ProgressiveDiscounts %}
+        {% for discount in ProgressiveDiscounts %}
+            {% if discount.description %}
+                <div class="tab-item tab-item-progressive-discount">
+                    <h3 class="tab-title">
+                        {{ discount.name }}
+                    </h3>
+                    <div class="tab">
+                        <p>{{ discount.description }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+</div>

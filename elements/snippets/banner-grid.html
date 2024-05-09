@@ -1,0 +1,48 @@
+{% if utils.is_mobile %}
+    {% set banner_id = 'extra2' %}
+{% else %}
+    {% set banner_id = 'extra1' %}
+{% endif %}
+
+{% set banner = banners[banner_id] %}
+
+{% if banner %}
+    <div class="container {% if banner and banners.extra3 %} banner-line-grid {% endif %} {% if banner and banners.extra4 %} banner-line-grid {% endif %}">
+        <div class="banner-line">
+
+            {% element 'snippets/banner' {
+                image    : banner,
+                notLazy  : true 
+            } %}
+
+        </div>
+    </div>
+{% endif %}
+
+{% if banners.extra3 or banners.extra4 %}
+    <div class="container">
+        <div class="banners-grid flex justify-between {% if(banners.extra3 and banners.extra4) %} two {% endif %}">
+
+            {% if banners.extra3 %}
+                <div class="item">
+
+                    {% element 'snippets/banner' {
+                        image    : banners.extra3
+                    } %}
+
+                </div>
+            {% endif %}
+
+            {% if banners.extra4 %}
+                <div class="item">
+
+                    {% element 'snippets/banner' {
+                        image    : banners.extra4
+                    } %}
+
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+{% endif %}

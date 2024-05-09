@@ -1,0 +1,19 @@
+<div class="header-search-wrapper">
+    <a href="javascript: void(0);" rel="noreferrer noopener" class="header-search-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22.638" viewBox="0 0 22 22.638">
+            <path d="M1.057,21.892,2.5,23.333l4.47-4.47-1.4-1.479L1.057,21.891ZM14.647,1.333A9.035,9.035,0,0,0,7.285,15.622l1.7,1.794A9.04,9.04,0,1,0,14.648,1.333Zm0,16.055a7.008,7.008,0,1,1,7.008-7.008A7.016,7.016,0,0,1,14.647,17.388Z" transform="translate(-1.333 23.695) rotate(-90)" fill="#151414"/>
+        </svg>
+    </a>
+</div>
+<form class="header-search-form" action="{{ links.search }}" method="get" data-search="suggestion">
+    <div class="header-search-form-content">
+        <input type="hidden" name="loja" value="{{ store.id }}">
+        <input class="input-search" placeholder="O que procura?" spellcheck="false" autocomplete="off" data-input="suggestion" type="text"  name="palavra_busca">
+        <button class="button-search" aria-label="Buscar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22.638" viewBox="0 0 22 22.638">
+                <path d="M1.057,21.892,2.5,23.333l4.47-4.47-1.4-1.479L1.057,21.891ZM14.647,1.333A9.035,9.035,0,0,0,7.285,15.622l1.7,1.794A9.04,9.04,0,1,0,14.648,1.333Zm0,16.055a7.008,7.008,0,1,1,7.008-7.008A7.016,7.016,0,0,1,14.647,17.388Z" transform="translate(-1.333 23.695) rotate(-90)" fill="#151414"/>
+            </svg>
+        </button>
+        <div class="suggestion is-hidden" data-container="suggestion"></div>
+    </div>
+</form>

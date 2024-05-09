@@ -1,0 +1,93 @@
+<div class="catalog-header">
+
+    <div class="catalog-info">
+        
+        <div class="catalog-title">
+            
+            {% element 'snippets/breadcrumb' %}
+            
+            <h1 class="catalog-name">
+                {{ category.name }}
+            </h1>
+            
+        </div>
+
+        {% if products | length > 0 %}
+        
+            <div class="catalog-buttons">
+    
+                <div class="system-filter">
+                    {% element 'snippets/filter' %}
+                </div>
+                
+                <button class="button-filter-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15">
+                        <path d="M15,2.3c0,1.765-4.735,5.9-5.619,7.663v3.651c0,.01-.006.017-.007.027v.422A.938.938,0,0,1,8.438,15H6.563a.938.938,0,0,1-.937-.937v-.421c0-.01-.007-.017-.007-.028V9.962C4.735,8.2,0,4.065,0,2.3H.014A.432.432,0,0,1,0,2.244C0,1.241,3.36,0,7.5,0S15,1.241,15,2.244a.369.369,0,0,1-.014.055ZM7.58.93C3.946.93.931,1.514.931,2.584S3.946,4.7,7.58,4.7s6.473-1.042,6.473-2.112S11.213.93,7.58.93Z" fill="#151414"/>
+                    </svg>
+                    Filtrar
+                </button>
+    
+                {% if settings.compare %}
+                    <a href="/loja/comparador.php?loja={{store.id}}&IdDep={{category.id}}" class="button-compare">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="14" viewBox="0 0 18 14">
+                          <path d="M6.99,11,3,15l3.99,4V16H14V14H6.99ZM21,9,17.01,5V8H10v2h7.01v3Z" transform="translate(-3 -5)"/>
+                        </svg>
+                        {{ Translation("comparar_produto") }}
+                    </a>
+                {% endif %}
+                
+            </div>
+            
+            <div class="filter-toggle">
+                <div class="filter-toggle-title">
+                    <h4>FILTRAR POR</h4>
+                    <a href="javascript: void(0);" rel="noreferrer noopener" class="filter-toggle-close">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14.964" height="14.964" viewBox="0 0 14.964 14.964">
+                            <path data-name="close" d="M6.225,4.811A1,1,0,0,0,4.811,6.225L10.586,12,4.811,17.775a1,1,0,0,0,1.414,1.414L12,13.414l5.775,5.775a1,1,0,0,0,1.414-1.414L13.414,12l5.775-5.775a1,1,0,0,0-1.414-1.414L12,10.586Z" transform="translate(-4.518 -4.518)"/>
+                        </svg>
+                    </a>
+                </div>
+                {% element 'smartfilter' %}
+            </div>
+
+        {% endif %}
+
+    </div>
+    
+    <div class="filter-toggle-background"></div>
+
+</div>
+
+<div class="catalog-cols">
+
+    {% if products | length > 0 %}
+
+        <div class="catalog-content">
+            {% element 'showcase-catalog' {
+                "products": products
+            } %}
+        </div>
+
+        {% if paginate.params.pageCount > 1 %}
+            <div class="catalog-footer flex justify-center align-center">
+                {% element 'snippets/pagination' %}
+            </div>
+        {% endif %}
+
+    {% else %}
+
+        <div class="catalog-empty">
+            {{ Translation('nenhum_resultado') }} :(
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% if category.small_description %}
+    <div class="catalog-description">
+        <div class="board_htm">
+            {{ category.small_description }}
+        </div>
+    </div>
+{% endif %}

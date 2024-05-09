@@ -1,0 +1,65 @@
+<div class="product">
+
+    {% if pages.current == 'catalog' and settings.compare %}
+        <div class="compare-buttons">
+
+            <a href="{{ links.compare_delete ~ product.id }}" class="flex justify-center align-center {{ not product.compare ? 'compare-hidden' }}" data-compare="remove">
+                <span class="filter-checkbox checked"></span>
+                {{ Translation("remover_comparar") }}
+            </a>
+
+            <a href="{{ links.compare_add ~ product.id }}" class="flex justify-center align-center {{ product.compare ? 'compare-hidden' }}" data-compare="add">
+                <span class="filter-checkbox"></span>
+                {{ Translation("comparar_produto") }}
+            </a>
+
+        </div>
+    {% endif %}
+    
+    <a href="{{ product.link }}" title="{{ product.name }}">
+
+        <div class="image">
+    
+            <img class="lazyload" data-src="{{ product.images[0].full }}" alt="{{ product.name }}">
+            
+            {% if product.images[1] %}
+                <div class="image-hover">
+                    <img class="lazyload" data-src="{{ product.images[1].full }}" alt="{{ product.name }}">
+                </div>
+            {% endif %}
+
+            {% element 'snippets/product-tags' { 'product': product } %}
+    
+        </div>
+    
+        <div class="product-info">
+    
+            <div class="product-name">
+                {{ product.name }}
+            </div>
+    
+            <div class="product-price">
+                {% if product.available and (product.stock > 0 or settings.without_stock_sale) and not product.upon_request %}
+    
+                    {% element 'snippets/product-price' { 'product': product } %}
+    
+                {% elseif product.upon_request %}
+    
+                    {% element 'snippets/product-message' { 'product_message': 'Sob consulta', 'know_more' : 'Saiba mais' } %}
+    
+                {% elseif product.stock <= 0 %}
+    
+                    {% element 'snippets/product-message' {  'product_message': 'Esse acabou :(', 'know_more' : 'Avise-me quando chegar' } %}
+    
+                {% else %}
+    
+                    {% element 'snippets/product-message' {  'product_message': 'Esse acabou :(', 'know_more' : 'Avise-me quando chegar'  } %}
+    
+                {% endif %}
+            </div>
+    
+        </div>
+    
+    </a>
+
+</div>

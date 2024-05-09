@@ -1,0 +1,96 @@
+<div id="menu-mobile" class="toggle-sidebar toggle-sidebar-close">
+    
+    <div class="toggle-sidebar-content">
+        
+        <div class="toggle-sidebar-header">
+            <h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="29.078" height="27.066" viewBox="0 0 29.078 27.066">
+                    <path d="M28.5,24.172a14.474,14.474,0,0,0-8.939-8.116,13.614,13.614,0,0,0,2.116-7.888c.05-5.607-4.574-7.131-7.024-7.151s-7.1,1.421-7.151,7.028a13.627,13.627,0,0,0,1.977,7.923A14.469,14.469,0,0,0,.4,23.928l-.5,1.13,1.143.47a39.884,39.884,0,0,0,13.371,2.555,39.9,39.9,0,0,0,13.415-2.32l1.15-.448-.478-1.141ZM14.627,3.426c.481.01,4.685.214,4.645,4.722-.032,3.608-1.013,6.352-2.688,7.528l-2.073,1.455-2.042-1.489c-1.656-1.207-2.588-3.967-2.555-7.575.04-4.509,4.248-4.639,4.714-4.64Zm-.188,22.249a38.354,38.354,0,0,1-11.25-1.936,12.665,12.665,0,0,1,8.806-5.946l2.516-.507,2.506.549a12.68,12.68,0,0,1,8.7,6.1,38.156,38.156,0,0,1-11.282,1.741Z" transform="translate(0.095 -1.018)" fill="#151414"/>
+                </svg>
+                <a href="{{ links.central }}">
+                    Minha Conta
+                    <br>
+                    <span class="tray-hide" data-logged-user="false"><strong>Entre</strong> ou <strong>Cadastre-se</strong></span>
+                    <span class="tray-hide" data-logged-user="true">Ol&aacute;, <strong data-customer="name"></strong></span>
+                </a>
+            </h3>
+            <a href="javascript: void(0);" rel="noreferrer noopener" class="toggle-sidebar-close">
+                <svg class="toggle-sidebar-close" xmlns="http://www.w3.org/2000/svg" width="14.964" height="14.964" viewBox="0 0 14.964 14.964">
+                    <path class="toggle-sidebar-close" d="M6.225,4.811A1,1,0,0,0,4.811,6.225L10.586,12,4.811,17.775a1,1,0,0,0,1.414,1.414L12,13.414l5.775,5.775a1,1,0,0,0,1.414-1.414L13.414,12l5.775-5.775a1,1,0,0,0-1.414-1.414L12,10.586Z" transform="translate(-4.518 -4.518)"/>
+                </svg>
+            </a>
+        </div>
+        
+        <div class="toggle-sidebar-container">
+        
+            <nav class="nav-mobile">
+                <ul class="list first-level">
+    
+                    {% for category in categories %}
+                    
+                        <li {% if category.children %} class="sub" {% endif %}>
+                            
+                            <a href="{{ category.link }}">
+                                <span>{{ category.name }}</span>
+                                {% if category.children %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13.76" height="7.361" viewBox="0 0 13.76 7.361">
+                                    <path d="M15.054,9.613a.557.557,0,0,1,.783,0,.544.544,0,0,1,0,.775L9.511,16.652a.557.557,0,0,1-.783,0L2.4,10.388a.544.544,0,0,1,0-.775.557.557,0,0,1,.783,0l5.935,5.713,5.935-5.713Z" transform="translate(-2.239 -9.452)" fill="#151414"/>
+                                </svg>
+                                {% endif %}
+                            </a>
+    
+                            {% if category.children %}
+                            
+                                <ul class="second-level">
+
+                                    <li><a href="{{ category.link }}">Ver tudo</a></li>
+
+                                    {% for level2 in category.children %}
+                                    
+                                        <li {% if level2.children %} class="sub" {% endif %}>
+                                            
+                                            <a href="{{ level2.link }}">
+                                                <span>{{ level2.name }}</span>
+                                                {% if level2.children %}
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="13.76" height="7.361" viewBox="0 0 13.76 7.361">
+                                                    <path d="M15.054,9.613a.557.557,0,0,1,.783,0,.544.544,0,0,1,0,.775L9.511,16.652a.557.557,0,0,1-.783,0L2.4,10.388a.544.544,0,0,1,0-.775.557.557,0,0,1,.783,0l5.935,5.713,5.935-5.713Z" transform="translate(-2.239 -9.452)" fill="#151414"/>
+                                                </svg>
+                                                {% endif %}
+                                            </a>
+                                            
+                                            {% if level2.children %}
+                                            
+                                                <ul class="third-level">
+                                                    
+                                                    <li><a href="{{ level2.link }}">Ver tudo</a></li>
+                                                    
+                                                    {% for level3 in level2.children %}
+                                                        <li>
+                                                            <a href="{{ level3.link }}" title="{{ level3.name }}">{{ level3.name }}</a>
+                                                        </li>
+                                                    {% endfor %}
+                                            
+                                                </ul>
+                                            
+                                            {% endif %}
+                                            
+                                        </li>
+                                    
+                                    {% endfor %}
+
+                                </ul>
+                            
+                            {% endif %}   
+    
+                        </li>
+    
+                    {% endfor %}  
+                        
+                </ul> 
+            </nav>
+        
+        </div>
+        
+    </div>
+
+</div>

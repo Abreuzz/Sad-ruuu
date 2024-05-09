@@ -1,0 +1,9 @@
+<div class="showcase-catalog">
+    <ul class="list-product list-product-cols-{{ settings.products_columns }}" data-slides="{{ settings.slide_quantity ? settings.slide_quantity : 5 }}">
+        {% for item in products %}
+            <li class="item">
+                {% element 'snippets/product' { 'product' : item } %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>

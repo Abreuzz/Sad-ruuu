@@ -1,0 +1,55 @@
+{% set slideshow = utils.is_mobile ? banners.mobile : banners.home %}
+{% if slideshow %}
+
+    {% set slideConfigs = {
+        'stopOnHover' : (settings.banner_home_stop_hover ? true : false),
+        'timer'       : 10000,
+        'isMobile'    : utils.is_mobile
+    } %}
+
+    <div class="banner-home" data-settings="{{ slideConfigs | json_encode() | escape }}">
+        {% if slideshow.type == 'javascript' %}
+
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for slide in slideshow.slides %}
+                        {% set lazyIndex = loop.index == 1 ? false : true %}
+                        <div class="swiper-slide item">
+                            {% element 'snippets/banner' {
+                                image    : slide,
+                                swiper   : lazyIndex,
+                                notLazy  : lazyIndex,
+                                padding  : true,
+                                location : 'banner-home'
+                            } %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-button prev">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12.125" height="22.666" viewBox="0 0 12.125 22.666">
+                        <path d="M21.109.265a.917.917,0,0,1,1.29,0,.9.9,0,0,1,0,1.277L11.978,11.86a.917.917,0,0,1-1.29,0L.267,1.542a.9.9,0,0,1,0-1.277.917.917,0,0,1,1.29,0l9.776,9.41L21.108.265Z" transform="translate(12.125) rotate(90)" fill="#151414"/>
+                    </svg>
+                </div>
+                <div class="swiper-button next">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12.125" height="22.666" viewBox="0 0 12.125 22.666">
+                        <path d="M21.109.265a.917.917,0,0,1,1.29,0,.9.9,0,0,1,0,1.277L11.978,11.86a.917.917,0,0,1-1.29,0L.267,1.542a.9.9,0,0,1,0-1.277.917.917,0,0,1,1.29,0l9.776,9.41L21.108.265Z" transform="translate(0 22.666) rotate(-90)" fill="#151414"/>
+                    </svg>
+                </div> 
+                <div class="dots"></div>
+            </div>
+
+        {% else %}
+
+            <div class="item">
+                {% element 'snippets/banner' {
+                    image    : slideshow,
+                    swiper   : false,
+                    padding  : true,
+                    location : 'banner-home'
+                } %}
+            </div>
+
+        {% endif %}
+    </div>
+
+{% endif %}

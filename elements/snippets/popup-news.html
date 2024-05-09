@@ -1,0 +1,32 @@
+{% if settings.config_news_popup_status and (settings.config_news_popup_title or settings.config_news_popup_text) %}
+    <div id="popup-news" class="popup-news-close">
+        <div class="popup-news-container {% if settings.config_news_popup_image %} popup-news-container-image {% endif %}" {% if settings.color_news_popup_background %} data-color-background="1" {% endif %}>
+            <a href="javascript: void(0);" class="popup-news-close" {% if settings.color_news_popup_button_close_background %} data-color-background="1" {% endif %} {% if settings.color_news_popup_button_close_background_hover %} data-color-background-hover="1" {% endif %}>
+                <svg class="popup-news-close" {% if settings.color_news_popup_button_close_text %} data-color-text="1" {% endif %} {% if settings.color_news_popup_button_close_text_hover %} data-color-text-hover="1" {% endif %} xmlns="http://www.w3.org/2000/svg" width="14.964" height="14.964" viewBox="0 0 14.964 14.964">
+                    <path class="popup-news-close" data-name="close" d="M6.225,4.811A1,1,0,0,0,4.811,6.225L10.586,12,4.811,17.775a1,1,0,0,0,1.414,1.414L12,13.414l5.775,5.775a1,1,0,0,0,1.414-1.414L13.414,12l5.775-5.775a1,1,0,0,0-1.414-1.414L12,10.586Z" transform="translate(-4.518 -4.518)"></path>
+                </svg>
+            </a>
+            {% if settings.config_news_popup_image %}
+                <img src="{{ asset(settings.config_news_popup_image) }}" alt="Pop-up Newsletter">
+            {% endif %}
+            <div class="popup-news-content">
+                <form class="form" action="/mvc/store/newsletter/" method="post">
+                    {% if settings.config_news_popup_title %}
+                        <h3 {% if settings.color_news_popup_title %} data-color-text="1" {% endif %}>{{ settings.config_news_popup_title }}</h3>
+                    {% endif %}
+                    {% if settings.config_news_popup_text %}
+                        <p {% if settings.color_news_popup_text %} data-color-text="1" {% endif %}>{{ settings.config_news_popup_text }}</p>
+                    {% endif %}
+                    {% set news_popup_button_text = 'Cadastrar' %}
+                    {% if settings.config_news_popup_button %}
+                        {% set news_popup_button_text = settings.config_news_popup_button %}
+                    {% endif %}
+                    <input type="hidden" name="loja" value="{{ store.id }}">
+                    <input {% if settings.color_news_popup_input_background %} data-color-background="1" {% endif %} {% if settings.color_news_popup_input_text %} data-color-text="1" {% endif %} type="text" class="field" name="name" placeholder="Nome" required spellcheck="false" autocomplete="off">
+                    <input {% if settings.color_news_popup_input_background %} data-color-background="1" {% endif %} {% if settings.color_news_popup_input_text %} data-color-text="1" {% endif %} type="email" class="field" name="email" placeholder="E-mail" required spellcheck="false" autocomplete="off">
+                    <button type="submit" class="button" title="{{ news_popup_button_text }}" aria-label="{{ news_popup_button_text }}" {% if settings.color_news_popup_button_background %} data-color-background="1" {% endif %} {% if settings.color_news_popup_button_background_hover %} data-color-background-hover="1" {% endif %} {% if settings.color_news_popup_button_border %} data-color-border="1" {% endif %} {% if settings.color_news_popup_button_border_hover %} data-color-border-hover="1" {% endif %} {% if settings.color_news_popup_button_text %} data-color-text="1" {% endif %} {% if settings.color_news_popup_button_text_hover %} data-color-text-hover="1" {% endif %}>{{ news_popup_button_text }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endif %}
